@@ -60,37 +60,62 @@
 }
 
 .template-paper {
-  width: 210mm; /* A4 width */
-  min-height: 297mm; /* A4 height */
+  width: 210mm;
+  min-height: 297mm;
   margin: 0 auto;
   background: white;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  padding: 50px;
+  padding: 20mm; /* Standard margin for A4 */
   position: relative;
   font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #1e293b;
   border: 1px solid #ddd;
+  box-sizing: border-box;
 }
 
 @media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  
+  html, body {
+    height: 297mm;
+    width: 210mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    background: white !important;
+  }
+
   .templates-header, .site-header, .site-footer, .cookie-consent-banner, .action-btns, .no-print {
     display: none !important;
   }
+  
   .templates-container {
-    padding: 0;
-    margin: 0;
-    background: white;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: block !important;
   }
+  
+  .template-viewer {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
   .template-paper {
     box-shadow: none !important;
     margin: 0 !important;
-    padding: 20px !important; /* Some padding for print margins */
-    max-width: 100% !important;
-    min-height: auto !important;
+    padding: 15mm !important; /* Slightly smaller padding for print to ensure fit */
+    width: 210mm !important;
+    height: 297mm !important;
     border: none !important;
-  }
-  body {
-    background: white !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    overflow: hidden !important; /* Prevent content from spilling over to 2nd page */
   }
 }
 
