@@ -1,0 +1,385 @@
+/* Templates.css */
+.templates-container {
+  padding: 40px 20px;
+  background-color: #7a9ca5; /* Matching the invoice background color */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.templates-header {
+  max-width: 1000px;
+  margin: 0 auto 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.template-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.template-btn {
+  padding: 10px 20px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.template-btn.active {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.action-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #1e293b;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.action-btn:hover {
+  background: #334155;
+}
+
+.template-paper {
+  width: 210mm; /* A4 width */
+  min-height: 297mm; /* A4 height */
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  padding: 50px;
+  position: relative;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1e293b;
+  border: 1px solid #ddd;
+}
+
+@media print {
+  .templates-header, .site-header, .site-footer, .cookie-consent-banner, .action-btns, .no-print {
+    display: none !important;
+  }
+  .templates-container {
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+  .template-paper {
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 20px !important; /* Some padding for print margins */
+    max-width: 100% !important;
+    min-height: auto !important;
+    border: none !important;
+  }
+  body {
+    background: white !important;
+  }
+}
+
+/* Common Template Elements */
+.editable-input {
+  border: 1px solid transparent;
+  padding: 4px 8px;
+  border-radius: 4px;
+  width: 100%;
+  transition: all 0.2s;
+  background: rgba(0, 0, 0, 0.02);
+  color: #1e293b;
+}
+
+.editable-input:hover {
+  border-color: #cbd5e1;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.editable-input:focus {
+  border-color: #2563eb;
+  background: white;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+/* Invoice Fly Template Styles */
+.invoice-fly-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.invoice-fly-logo-section h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0;
+  color: #334155;
+}
+
+.invoice-fly-meta {
+  text-align: right;
+}
+
+.invoice-fly-badge {
+  background: #7a9ca5;
+  color: white;
+  padding: 8px 25px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  display: inline-block;
+  font-size: 20px;
+  border-radius: 2px;
+}
+
+.invoice-fly-badge-date {
+  background: #7a9ca5;
+  color: white;
+  padding: 6px 25px;
+  font-weight: 700;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 2px;
+}
+
+.invoice-fly-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.invoice-fly-section-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.invoice-fly-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 40px;
+}
+
+.invoice-fly-table th {
+  text-align: left;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 0;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.invoice-fly-table td {
+  padding: 15px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.invoice-fly-totals {
+  width: 300px;
+  margin-left: auto;
+}
+
+.invoice-fly-total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.invoice-fly-total-row.grand-total {
+  border-top: 2px solid #1e293b;
+  margin-top: 15px;
+  padding-top: 15px;
+  font-weight: 900;
+  font-size: 20px;
+}
+
+.invoice-footer-divider {
+  border-top: 1px solid #1e293b;
+  margin: 40px 0;
+}
+
+.invoice-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1px 1.2fr;
+  gap: 0;
+  margin-top: 20px;
+}
+
+.invoice-footer-vertical-line {
+  background-color: #1e293b;
+  width: 1px;
+  height: 100%;
+}
+
+/* Customs Invoice Template Styles */
+.customs-invoice-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 900;
+  text-transform: uppercase;
+  border: 2px solid black;
+  padding: 8px;
+  margin-bottom: 20px;
+}
+
+.customs-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border: 2px solid black;
+  margin-bottom: 20px;
+}
+
+.customs-meta-item {
+  border-right: 2px solid black;
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.customs-meta-item:last-child {
+  border-right: none;
+}
+
+.customs-meta-label {
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.customs-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.customs-box {
+  border: 2px solid black;
+}
+
+.customs-box-title {
+  background: #d1d5db;
+  font-size: 14px;
+  font-weight: 900;
+  padding: 8px;
+  border-bottom: 2px solid black;
+}
+
+.customs-box-content {
+  padding: 0;
+}
+
+.customs-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  border-bottom: 2px solid black;
+}
+
+.customs-row:last-child {
+  border-bottom: none;
+}
+
+.customs-label-cell {
+  background: #e5e7eb;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 900;
+  border-right: 2px solid black;
+}
+
+.customs-value-cell {
+  padding: 5px 8px;
+  background: white;
+}
+
+.customs-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid black;
+  margin-bottom: 20px;
+}
+
+.customs-table th, .customs-table td {
+  border: 2px solid black;
+  padding: 6px;
+  font-size: 11px;
+}
+
+.customs-table th {
+  background: #e5e7eb;
+  font-weight: 900;
+}
+
+/* Packing Slip Styles */
+.packing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+}
+
+.packing-title {
+  font-size: 48px;
+  font-weight: 900;
+  color: #004a7c;
+}
+
+.packing-blue-bar {
+  background: #004a7c;
+  color: white;
+  padding: 8px 15px;
+  font-weight: 900;
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.packing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.packing-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+.packing-table th {
+  background: #004a7c;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  font-weight: 900;
+  border: 1px solid white;
+}
+
+.packing-table td {
+  padding: 10px;
+  border: 1px solid #eee;
+}
+
+.packing-table tr:nth-child(even) {
+  background: #f1f5f9;
+}
