@@ -142,117 +142,60 @@
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
 }
 
-/* Invoice Fly Template Styles */
+/* Invoice Fly Redesign */
+.invoice-fly-label {
+  color: #64748b;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 .invoice-fly-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 }
 
-.invoice-fly-logo-section h1 {
-  font-size: 42px;
-  font-weight: 700;
-  margin: 0;
-  color: #334155;
+.invoice-fly-left {
+  flex: 1;
 }
 
-.invoice-fly-meta {
-  text-align: right;
-}
-
-.invoice-fly-badge {
-  background: #7a9ca5;
-  color: white;
-  padding: 8px 25px;
-  font-weight: 700;
-  margin-bottom: 5px;
-  display: inline-block;
-  font-size: 20px;
-  border-radius: 2px;
-}
-
-.invoice-fly-badge-date {
-  background: #7a9ca5;
-  color: white;
-  padding: 6px 25px;
-  font-weight: 700;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 2px;
-}
-
-.invoice-fly-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  margin-bottom: 40px;
-}
-
-.invoice-fly-section-title {
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 14px;
-  color: #64748b;
-  margin-bottom: 10px;
+.invoice-fly-number-box {
+  border-radius: 4px;
+  overflow: hidden;
+  width: 180px;
 }
 
 .invoice-fly-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 40px;
+  margin-top: 30px;
 }
 
 .invoice-fly-table th {
-  text-align: left;
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 12px 0;
-  text-transform: uppercase;
-  font-size: 13px;
+  font-weight: 700;
+  font-size: 12px;
   color: #64748b;
+  letter-spacing: 0.05em;
 }
 
 .invoice-fly-table td {
-  padding: 15px 0;
-  border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
 }
 
-.invoice-fly-totals {
-  width: 300px;
-  margin-left: auto;
+.invoice-fly-summary .grand-total-row {
+  border-top: 2px solid #000;
+  padding-top: 10px;
+  margin-top: 10px;
 }
 
-.invoice-fly-total-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 0;
+.invoice-fly-footer-section p {
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 13px;
 }
 
-.invoice-fly-total-row.grand-total {
-  border-top: 2px solid #1e293b;
-  margin-top: 15px;
-  padding-top: 15px;
-  font-weight: 900;
-  font-size: 20px;
-}
-
-.invoice-footer-divider {
-  border-top: 1px solid #1e293b;
-  margin: 40px 0;
-}
-
-.invoice-footer-grid {
-  display: grid;
-  grid-template-columns: 1fr 1px 1.2fr;
-  gap: 0;
-  margin-top: 20px;
-}
-
-.invoice-footer-vertical-line {
-  background-color: #1e293b;
-  width: 1px;
-  height: 100%;
-}
 
 /* Customs Invoice Template Styles */
 .customs-invoice-title {

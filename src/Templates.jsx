@@ -99,7 +99,10 @@ const Templates = () => {
       specialNotes: 'Handle with care. Fragile items included.',
       packedBy: 'Michael Smith',
       checkedBy: 'Sarah Johnson',
-      contactInfo: 'For enquiries contact John Doe on 0-000-000-0000\n111 Street, Town/City, County, ST, 00000\nTel: 0-000-000-0000 Email: info@tenneco.com'
+      contactPerson: 'John Doe',
+      contactPhone: '0-000-000-0000',
+      addressLine1: '111 Street, Town/City, County, ST, 00000',
+      contactFull: 'Tel: 0-000-000-0000 Fax: 0-000-000-0000 E-mail: info@tenneco.com Web: www.tenneco.com'
     }
   });
 
@@ -176,101 +179,119 @@ const Templates = () => {
     return (
       <div className="template-paper">
         <div className="invoice-fly-header">
-          <div className="invoice-fly-logo-section">
-            <p className="invoice-fly-section-title">INVOICE</p>
-            <h1 style={{ fontSize: '72px', fontWeight: '900', color: '#1e293b', marginBottom: '20px' }}>
-              <input className="editable-input" value="Invoice Fly." readOnly />
-            </h1>
-            <div style={{ marginTop: '10px' }}>
+          <div className="invoice-fly-left">
+            <p className="invoice-fly-label mb-1">INVOICE</p>
+            <input 
+              className="editable-input text-5xl font-medium tracking-tight mb-6" 
+              value="Invoice Fly." 
+              readOnly 
+              style={{ padding: 0, background: 'none' }}
+            />
+            <div className="invoice-fly-company-info">
               <input className="editable-input font-bold" value={d.from.name} onChange={e => updateNestedField('invoice', 'from', 'name', e.target.value)} />
-              <textarea className="editable-input" rows="4" value={d.from.address} onChange={e => updateNestedField('invoice', 'from', 'address', e.target.value)} />
+              <textarea className="editable-input" rows="2" value={d.from.address} onChange={e => updateNestedField('invoice', 'from', 'address', e.target.value)} />
               <input className="editable-input" value={d.from.email} onChange={e => updateNestedField('invoice', 'from', 'email', e.target.value)} />
               <input className="editable-input" value={d.from.phone} onChange={e => updateNestedField('invoice', 'from', 'phone', e.target.value)} />
             </div>
           </div>
-          <div className="invoice-fly-meta">
-            <div className="invoice-fly-badge">NO. {d.no}</div>
-            <div className="mb-4">
-              <div className="invoice-fly-badge-date">
-                <input className="editable-input text-center text-white" value={d.date} onChange={e => updateField('invoice', 'date', e.target.value)} />
+          <div className="invoice-fly-right">
+            <div className="invoice-fly-number-box">
+              <div className="flex justify-between items-center px-3 py-1 bg-[#7a9ca5] text-white font-bold">
+                <span>NO.</span>
+                <input className="editable-input w-20 text-right bg-transparent text-white border-none p-0" value={d.no} onChange={e => updateField('invoice', 'no', e.target.value)} />
+              </div>
+              <div className="px-3 py-1 bg-[#94a3b8] text-white text-center text-sm">
+                <input className="editable-input bg-transparent text-white border-none p-0 text-center" value={d.date} onChange={e => updateField('invoice', 'date', e.target.value)} />
               </div>
             </div>
-            <div className="text-right text-sm" style={{ color: '#64748b' }}>
-              <div className="flex justify-end gap-2 mb-1"><span>Due date:</span> <input className="editable-input w-24 border-none text-right" value={d.dueDate} onChange={e => updateField('invoice', 'dueDate', e.target.value)} /></div>
-              <div className="flex justify-end gap-2"><span>P.O. Number:</span> <input className="editable-input w-24 border-none text-right" value={d.poNumber} onChange={e => updateField('invoice', 'poNumber', e.target.value)} /></div>
+            <div className="mt-8 text-sm">
+              <div className="flex justify-end gap-2 mb-2">
+                <span className="text-gray-500">Due date:</span>
+                <input className="editable-input w-24 border-none text-right p-0" value={d.dueDate} onChange={e => updateField('invoice', 'dueDate', e.target.value)} />
+              </div>
+              <div className="flex justify-end gap-2">
+                <span className="text-gray-500">P.O. Number:</span>
+                <input className="editable-input w-24 border-none text-right p-0" value={d.poNumber} onChange={e => updateField('invoice', 'poNumber', e.target.value)} />
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="invoice-fly-grid">
-          <div>
-            <p className="invoice-fly-section-title">BILL TO:</p>
+        <div className="invoice-fly-addresses grid grid-cols-2 gap-20 mb-12">
+          <div className="invoice-fly-address-group">
+            <p className="invoice-fly-label mb-2">BILL TO:</p>
             <input className="editable-input font-bold" value={d.billTo.name} onChange={e => updateNestedField('invoice', 'billTo', 'name', e.target.value)} />
-            <textarea className="editable-input" rows="3" value={d.billTo.address} onChange={e => updateNestedField('invoice', 'billTo', 'address', e.target.value)} />
+            <textarea className="editable-input" rows="2" value={d.billTo.address} onChange={e => updateNestedField('invoice', 'billTo', 'address', e.target.value)} />
             <input className="editable-input" value={d.billTo.email} onChange={e => updateNestedField('invoice', 'billTo', 'email', e.target.value)} />
             <input className="editable-input" value={d.billTo.phone} onChange={e => updateNestedField('invoice', 'billTo', 'phone', e.target.value)} />
           </div>
-          <div>
-            <p className="invoice-fly-section-title">SHIP TO:</p>
-            <input className="editable-input font-bold" value={d.shipTo.name} onChange={e => updateNestedField('invoice', 'shipTo', 'name', e.target.value)} />
-            <textarea className="editable-input" rows="3" value={d.shipTo.address} onChange={e => updateNestedField('invoice', 'shipTo', 'address', e.target.value)} />
-            <input className="editable-input" value={d.shipTo.email} onChange={e => updateNestedField('invoice', 'shipTo', 'email', e.target.value)} />
-            <input className="editable-input" value={d.shipTo.phone} onChange={e => updateNestedField('invoice', 'shipTo', 'phone', e.target.value)} />
+          <div className="invoice-fly-address-group">
+            <p className="invoice-fly-label mb-2 text-right">SHIP TO:</p>
+            <input className="editable-input font-bold text-right" value={d.shipTo.name} onChange={e => updateNestedField('invoice', 'shipTo', 'name', e.target.value)} />
+            <textarea className="editable-input text-right" rows="2" value={d.shipTo.address} onChange={e => updateNestedField('invoice', 'shipTo', 'address', e.target.value)} />
+            <input className="editable-input text-right" value={d.shipTo.email} onChange={e => updateNestedField('invoice', 'shipTo', 'email', e.target.value)} />
+            <input className="editable-input text-right" value={d.shipTo.phone} onChange={e => updateNestedField('invoice', 'shipTo', 'phone', e.target.value)} />
           </div>
         </div>
 
-        <p className="text-right text-sm italic mb-2"><b>Payment Terms:</b> Please pay within 30 days.</p>
+        <div className="text-right mb-6">
+          <p className="text-sm italic"><b>Payment Terms:</b> Please pay within 30 days.</p>
+        </div>
 
         <table className="invoice-fly-table">
           <thead>
             <tr>
-              <th width="50%">DESCRIPTION</th>
-              <th width="10%">QTY</th>
-              <th width="20%">PRICE</th>
-              <th width="20%">TOTAL</th>
+              <th className="text-left py-4 border-y border-gray-300">DESCRIPTION</th>
+              <th className="text-center py-4 border-y border-gray-300">QTY</th>
+              <th className="text-center py-4 border-y border-gray-300">PRICE</th>
+              <th className="text-right py-4 border-y border-gray-300">TOTAL</th>
             </tr>
           </thead>
           <tbody>
             {d.items.map((item, i) => (
               <tr key={i}>
-                <td><input className="editable-input" value={item.desc} onChange={e => updateItem('invoice', i, 'desc', e.target.value)} /></td>
-                <td><input className="editable-input" type="number" value={item.qty} onChange={e => updateItem('invoice', i, 'qty', e.target.value)} /></td>
-                <td><input className="editable-input" type="number" value={item.price} onChange={e => updateItem('invoice', i, 'price', e.target.value)} /></td>
-                <td className="text-right">${(item.qty * item.price).toFixed(2)}</td>
+                <td className="py-4 border-b border-gray-100"><input className="editable-input" value={item.desc} onChange={e => updateItem('invoice', i, 'desc', e.target.value)} /></td>
+                <td className="py-4 border-b border-gray-100 text-center"><input className="editable-input text-center" type="number" value={item.qty} onChange={e => updateItem('invoice', i, 'qty', e.target.value)} /></td>
+                <td className="py-4 border-b border-gray-100 text-center"><input className="editable-input text-center" type="number" value={item.price} onChange={e => updateItem('invoice', i, 'price', e.target.value)} /></td>
+                <td className="py-4 border-b border-gray-100 text-right font-medium">${(item.qty * item.price).toFixed(0)}</td>
               </tr>
             ))}
             <tr className="no-print">
-              <td colSpan="4"><button onClick={() => addItem('invoice')} className="text-blue-600 text-sm font-bold">+ Add Item</button></td>
+              <td colSpan="4" className="py-2"><button onClick={() => addItem('invoice')} className="text-blue-600 text-sm font-bold">+ Add Item</button></td>
             </tr>
           </tbody>
         </table>
 
-        <div className="invoice-fly-totals">
-          <div className="invoice-fly-total-row"><span>SUB TOTAL</span> <span>${calculateSubtotal().toFixed(2)}</span></div>
-          <div className="invoice-fly-total-row"><span>TAX ({d.tax}%)</span> <span>${calculateTax().toFixed(2)}</span></div>
-          <div className="invoice-fly-total-row"><span>DISCOUNT</span> <span><input className="editable-input w-20 text-right" type="number" value={d.discount} onChange={e => updateField('invoice', 'discount', e.target.value)} /></span></div>
-          <div className="invoice-fly-total-row"><span>SHIPPING</span> <span><input className="editable-input w-20 text-right" type="number" value={d.shipping} onChange={e => updateField('invoice', 'shipping', e.target.value)} /></span></div>
-          <div className="invoice-fly-total-row"><span><b>TOTAL AMOUNT</b></span> <span><b>${calculateTotal().toFixed(2)}</b></span></div>
-          <div className="invoice-fly-total-row"><span>AMOUNT PAID</span> <span><input className="editable-input w-20 text-right" type="number" value={d.amountPaid} onChange={e => updateField('invoice', 'amountPaid', e.target.value)} /></span></div>
-          <div className="invoice-fly-total-row grand-total"><span>BALANCE DUE</span> <span>${(calculateTotal() - d.amountPaid).toFixed(2)}</span></div>
-        </div>
-
-        <div className="invoice-footer-divider"></div>
-        <div className="invoice-footer-grid">
-          <div style={{ paddingRight: '40px' }}>
-            <p className="font-bold mb-4 uppercase text-sm" style={{ color: '#1e293b' }}>Terms & Conditions:</p>
-            <textarea className="editable-input text-sm" rows="3" value={d.terms} onChange={e => updateField('invoice', 'terms', e.target.value)} />
-          </div>
-          <div className="invoice-footer-vertical-line"></div>
-          <div style={{ paddingLeft: '40px' }}>
-            <p className="font-bold mb-4 uppercase text-sm" style={{ color: '#1e293b' }}>PAYMENT INFORMATION:</p>
-            <textarea className="editable-input text-sm" rows="4" value={d.paymentInfo} onChange={e => updateField('invoice', 'paymentInfo', e.target.value)} />
+        <div className="invoice-fly-summary flex justify-end mt-8">
+          <div className="w-64 space-y-2">
+            <div className="flex justify-between text-sm text-gray-500 uppercase"><span>Sub Total</span> <span>${calculateSubtotal().toFixed(0)}</span></div>
+            <div className="flex justify-between text-sm text-gray-500 uppercase"><span>Tax ({d.tax}%)</span> <span>${calculateTax().toFixed(0)}</span></div>
+            <div className="flex justify-between text-sm text-gray-500 uppercase items-center">
+              <span>Discount</span> 
+              <input className="editable-input w-16 text-right p-0" type="number" value={d.discount} onChange={e => updateField('invoice', 'discount', e.target.value)} />
+            </div>
+            <div className="flex justify-between text-sm text-gray-500 uppercase items-center">
+              <span>Shipping</span> 
+              <input className="editable-input w-16 text-right p-0" type="number" value={d.shipping} onChange={e => updateField('invoice', 'shipping', e.target.value)} />
+            </div>
+            <div className="flex justify-between font-bold pt-2 border-t border-gray-300"><span>TOTAL AMOUNT</span> <span>${calculateTotal().toFixed(0)}</span></div>
+            <div className="flex justify-between text-sm text-gray-500 uppercase items-center">
+              <span>Amount Paid</span> 
+              <input className="editable-input w-16 text-right p-0" type="number" value={d.amountPaid} onChange={e => updateField('invoice', 'amountPaid', e.target.value)} />
+            </div>
+            <div className="flex justify-between font-bold pt-4 border-t-2 border-black text-lg"><span>BALANCE DUE</span> <span>${(calculateTotal() - d.amountPaid).toFixed(0)}</span></div>
           </div>
         </div>
 
-        <div className="text-center mt-12 pt-4 border-t border-gray-100 flex justify-center items-center gap-2 opacity-50 text-[10px]">
-          <span>Powered by</span>
-          <span className="font-bold">Invoice Fly</span>
+        <div className="invoice-fly-footer grid grid-cols-2 gap-12 mt-12 pt-12 border-t border-gray-300">
+          <div className="invoice-fly-footer-section">
+            <p className="font-bold mb-4 uppercase text-sm">Terms & Conditions:</p>
+            <textarea className="editable-input text-xs leading-relaxed text-gray-600" rows="3" value={d.terms} onChange={e => updateField('invoice', 'terms', e.target.value)} />
+          </div>
+          <div className="invoice-fly-footer-section border-l border-gray-300 pl-12">
+            <p className="font-bold mb-4 uppercase text-sm">Payment Information:</p>
+            <textarea className="editable-input text-xs leading-relaxed text-gray-600" rows="4" value={d.paymentInfo} onChange={e => updateField('invoice', 'paymentInfo', e.target.value)} />
+          </div>
         </div>
       </div>
     );
@@ -541,9 +562,16 @@ const Templates = () => {
 
         <div className="text-center mt-12 text-[11px]">
           <h2 className="text-xl font-bold mb-4">Thank you for your business!</h2>
-          <p className="mb-2">Should you have any enquiries concerning this packing slip or your goods, please contact John Doe on 0-000-000-0000</p>
-          <p>111 Street, Town/City, County, ST, 00000</p>
-          <p>Tel: 0-000-000-0000 Fax: 0-000-000-0000 E-mail: info@tenneco.com Web: www.tenneco.com</p>
+          <div className="flex flex-col gap-1 items-center">
+            <div className="flex items-center gap-2">
+              <span>Should you have any enquiries concerning this packing slip or your goods, please contact</span>
+              <input className="editable-input w-32 border-none p-0 text-center" value={d.contactPerson} onChange={e => updateField('packing', 'contactPerson', e.target.value)} />
+              <span>on</span>
+              <input className="editable-input w-32 border-none p-0 text-center" value={d.contactPhone} onChange={e => updateField('packing', 'contactPhone', e.target.value)} />
+            </div>
+            <input className="editable-input w-full border-none p-0 text-center" value={d.addressLine1} onChange={e => updateField('packing', 'addressLine1', e.target.value)} />
+            <input className="editable-input w-full border-none p-0 text-center" value={d.contactFull} onChange={e => updateField('packing', 'contactFull', e.target.value)} />
+          </div>
         </div>
       </div>
     );
