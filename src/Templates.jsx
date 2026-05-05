@@ -4,7 +4,12 @@ import { Printer, Download, Save, RefreshCw } from 'lucide-react';
 import './Templates.css';
 
 const Templates = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [activeTemplate, setActiveTemplate] = useState('invoice');
+  const [logo, setLogo] = useState(null);
+  const [showMetadataEdit, setShowMetadataEdit] = useState(false);
+
   const [data, setData] = useState({
     invoice: {
       no: '1234',
@@ -112,7 +117,43 @@ const Templates = () => {
     if (saved) {
       setData(JSON.parse(saved));
     }
+    const savedLogo = localStorage.getItem('tenneco_custom_logo');
+    if (savedLogo) {
+      setLogo(savedLogo);
+    }
+    const auth = localStorage.getItem('tenneco_auth');
+    if (auth === 'true') {
+      setIsAuthenticated(true);
+    }
   }, []);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (loginForm.email === 'admin@templates.com' && loginForm.password === 'admin123') {
+      setIsAuthenticated(true);
+      localStorage.setItem('tenneco_auth', 'true');
+    } else {
+      alert('Invalid credentials');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('tenneco_auth');
+  };
+
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogo(reader.result);
+        localStorage.setItem('tenneco_custom_logo', reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
 
   const handleSave = () => {
     localStorage.setItem('tenneco_templates_data', JSON.stringify(data));
@@ -181,12 +222,31 @@ const Templates = () => {
         <div className="invoice-fly-header">
           <div className="invoice-fly-left">
             <p className="invoice-fly-label mb-1">INVOICE</p>
-            <input 
-              className="editable-input text-5xl font-medium tracking-tight mb-6" 
-              value="Invoice Fly." 
-              readOnly 
-              style={{ padding: 0, background: 'none' }}
-            />
+            <div className="mb-6 relative group">
+              {logo ? (
+                <div className="relative">
+                  <img src={logo} alt="Logo" className="max-h-24 object-contain" />
+                  <button 
+                    className="no-print absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ) : (
+                <input 
+                  className="editable-input text-5xl font-medium tracking-tight" 
+                  value="Invoice Fly." 
+                  readOnly 
+                  style={{ padding: 0, background: 'none' }}
+                />
+              )}
+              <label className="no-print block mt-2 text-xs text-blue-600 cursor-pointer hover:underline">
+                Upload Logo
+                <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+              </label>
+            </div>
+
             <div className="invoice-fly-company-info">
               <input className="editable-input font-bold" value={d.from.name} onChange={e => updateNestedField('invoice', 'from', 'name', e.target.value)} />
               <textarea className="editable-input" rows="2" value={d.from.address} onChange={e => updateNestedField('invoice', 'from', 'address', e.target.value)} />
@@ -577,6 +637,47 @@ const Templates = () => {
     );
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div className="login-screen">
+        <Helmet>
+          <title>Login - Document Templates</title>
+        </Helmet>
+        <div className="login-card">
+          <h1>Welcome Back</h1>
+          <p>Please login to access the invoicing system.</p>
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label>Email</label>
+              <input 
+                type="email" 
+                required 
+                value={loginForm.email} 
+                onChange={e => setLoginForm({...loginForm, email: e.target.value})}
+                placeholder="admin@templates.com"
+              />
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input 
+                type="password" 
+                required 
+                value={loginForm.password} 
+                onChange={e => setLoginForm({...loginForm, password: e.target.value})}
+                placeholder="••••••••"
+              />
+            </div>
+            <button type="submit" className="login-btn">Login</button>
+          </form>
+          <div className="login-footer">
+            <p>Demo Email: admin@templates.com</p>
+            <p>Demo Pass: admin123</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="templates-container">
       <Helmet>
@@ -613,13 +714,8 @@ const Templates = () => {
           <button className="action-btn" onClick={handlePrint}>
             <Printer size={18} /> Print / PDF
           </button>
-          <button className="action-btn" onClick={() => {
-            if(window.confirm('Reset all data to default?')) {
-              localStorage.removeItem('tenneco_templates_data');
-              window.location.reload();
-            }
-          }}>
-            <RefreshCw size={18} /> Reset
+          <button className="action-btn text-red-400" onClick={handleLogout}>
+            Logout
           </button>
         </div>
       </div>

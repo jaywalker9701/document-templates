@@ -1,11 +1,95 @@
-/* Templates.css */
 .templates-container {
   padding: 40px 20px;
-  background-color: #7a9ca5; /* Matching the invoice background color */
+  background-color: #f1f5f9;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* Login Screen Styles */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  font-family: 'Inter', sans-serif;
+}
+
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-card h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.login-card p {
+  color: #64748b;
+  margin-bottom: 32px;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.login-btn:hover {
+  background: #1d4ed8;
+}
+
+.login-footer {
+  margin-top: 24px;
+  font-size: 12px;
+  color: #94a3b8;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 16px;
 }
 
 .templates-header {
@@ -61,7 +145,7 @@
 
 .template-paper {
   width: 210mm;
-  min-height: 297mm;
+  height: 297mm; /* Locked A4 height */
   margin: 0 auto;
   background: white;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -71,6 +155,7 @@
   color: #1e293b;
   border: 1px solid #ddd;
   box-sizing: border-box;
+  overflow: hidden; /* Ensure content doesn't spill over */
 }
 
 @media print {
@@ -88,7 +173,7 @@
     print-color-adjust: exact;
   }
 
-  .templates-header, .site-header, .site-footer, .cookie-consent-banner, .action-btns, .no-print {
+  .templates-header, .site-header, .site-footer, .cookie-consent-banner, .action-btns, .no-print, .login-screen {
     display: none !important;
   }
   
@@ -107,9 +192,9 @@
   .template-paper {
     box-shadow: none !important;
     margin: 0 auto !important;
-    padding: 12mm !important; /* Slightly reduced to prevent cutting */
+    padding: 12mm !important;
     width: 210mm !important;
-    height: 296mm !important; /* 1mm shorter to prevent 2nd page trigger */
+    height: 297mm !important; /* Strictly locked to A4 */
     border: none !important;
     box-sizing: border-box !important;
     position: relative !important;
