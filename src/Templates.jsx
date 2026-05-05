@@ -541,7 +541,7 @@ const Templates = () => {
             <h1 className="packing-title">Packing Slip</h1>
             <div className="text-sm mt-4">
               <div className="flex justify-end gap-4"><span>Date:</span> <input className="editable-input w-32 border-b" value={d.date} onChange={e => updateField('packing', 'date', e.target.value)} /></div>
-              <div className="flex justify-end gap-4 mt-1"><span>Customer ID:</span> <input className="editable-input w-32 border-b" value={d.customerId} onChange={e => updateField('packing', 'customerId', e.target.value)} /></div>
+              <div className="flex justify-end gap-4 mt-1"><span className="whitespace-nowrap">Customer ID:</span> <input className="editable-input w-32 border-b" value={d.customerId} onChange={e => updateField('packing', 'customerId', e.target.value)} /></div>
             </div>
           </div>
         </div>
