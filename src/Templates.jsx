@@ -735,10 +735,6 @@ const Templates = () => {
             </div>
             <button type="submit" className="login-btn">Login</button>
           </form>
-          <div className="login-footer">
-            <p>Demo Email: admin@templates.com</p>
-            <p>Demo Pass: admin123</p>
-          </div>
         </div>
       </div>
     );
