@@ -220,37 +220,40 @@ const Templates = () => {
     return (
       <div className="template-paper">
         <div className="invoice-fly-header">
-            <div className="invoice-fly-logo-container no-print-padding">
-              {logo ? (
-                <div className="relative group logo-wrapper">
-                  <img src={logo} alt="Logo" className="invoice-custom-logo" />
-                  <div className="logo-actions no-print">
-                    <label className="logo-action-btn edit">
-                      Change
-                      <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
-                    </label>
-                    <button 
-                      className="logo-action-btn delete"
-                      onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="group relative">
-                  <input 
-                    className="editable-input text-5xl font-medium tracking-tight" 
-                    value="Invoice Fly." 
-                    readOnly 
-                    style={{ padding: 0, background: 'none' }}
-                  />
-                  <label className="no-print absolute -bottom-6 left-0 text-xs text-blue-600 cursor-pointer hover:underline">
-                    Upload Logo
+            <div className="invoice-fly-logo-container no-print-padding flex flex-col gap-4">
+              <div className="relative group logo-wrapper">
+                {logo ? (
+                  <>
+                    <img src={logo} alt="Logo" className="invoice-custom-logo" />
+                    <div className="logo-actions no-print">
+                      <label className="logo-action-btn edit">
+                        Change
+                        <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                      </label>
+                      <button 
+                        className="logo-action-btn delete"
+                        onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <label className="no-print block text-xs text-blue-600 cursor-pointer hover:underline mb-2">
+                    + Upload Logo
                     <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
                   </label>
-                </div>
-              )}
+                )}
+              </div>
+              
+              <div className="group relative">
+                <input 
+                  className="editable-input text-5xl font-medium tracking-tight" 
+                  value="Invoice Fly." 
+                  readOnly 
+                  style={{ padding: 0, background: 'none' }}
+                />
+              </div>
             </div>
 
             <div className="invoice-fly-company-info">
@@ -370,7 +373,37 @@ const Templates = () => {
 
     return (
       <div className="template-paper">
-        <h1 className="customs-invoice-title">INVOICE FOR CUSTOMS VALUE ONLY</h1>
+        <div className="flex justify-between items-start mb-6">
+          <div className="flex flex-col gap-2">
+            <div className="invoice-fly-logo-container no-print-padding">
+              <div className="relative group logo-wrapper">
+                {logo ? (
+                  <>
+                    <img src={logo} alt="Logo" className="invoice-custom-logo" />
+                    <div className="logo-actions no-print">
+                      <label className="logo-action-btn edit">
+                        Change
+                        <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                      </label>
+                      <button 
+                        className="logo-action-btn delete"
+                        onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <label className="no-print block text-xs text-blue-600 cursor-pointer hover:underline">
+                    + Upload Logo
+                    <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                  </label>
+                )}
+              </div>
+            </div>
+          </div>
+          <h1 className="customs-invoice-title text-right m-0">INVOICE FOR CUSTOMS VALUE ONLY</h1>
+        </div>
         
         <div className="customs-meta-grid">
           <div className="customs-meta-item">
@@ -533,9 +566,37 @@ const Templates = () => {
     return (
       <div className="template-paper">
         <div className="packing-header">
-          <div>
-            <input className="editable-input font-bold text-2xl" value={d.companyName} onChange={e => updateField('packing', 'companyName', e.target.value)} />
-            <input className="editable-input italic text-gray-500" value={d.companySlogan} onChange={e => updateField('packing', 'companySlogan', e.target.value)} />
+          <div className="flex flex-col gap-4">
+            <div className="invoice-fly-logo-container no-print-padding">
+              <div className="relative group logo-wrapper">
+                {logo ? (
+                  <>
+                    <img src={logo} alt="Logo" className="invoice-custom-logo" />
+                    <div className="logo-actions no-print">
+                      <label className="logo-action-btn edit">
+                        Change
+                        <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                      </label>
+                      <button 
+                        className="logo-action-btn delete"
+                        onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <label className="no-print block text-xs text-blue-600 cursor-pointer hover:underline">
+                    + Upload Logo
+                    <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                  </label>
+                )}
+              </div>
+            </div>
+            <div>
+              <input className="editable-input font-bold text-2xl" value={d.companyName} onChange={e => updateField('packing', 'companyName', e.target.value)} />
+              <input className="editable-input italic text-gray-500" value={d.companySlogan} onChange={e => updateField('packing', 'companySlogan', e.target.value)} />
+            </div>
           </div>
           <div className="text-right">
             <h1 className="packing-title">Packing Slip</h1>
