@@ -220,31 +220,37 @@ const Templates = () => {
     return (
       <div className="template-paper">
         <div className="invoice-fly-header">
-          <div className="invoice-fly-left">
-            <p className="invoice-fly-label mb-1">INVOICE</p>
-            <div className="mb-6 relative group">
+            <div className="invoice-fly-logo-container no-print-padding">
               {logo ? (
-                <div className="relative">
-                  <img src={logo} alt="Logo" className="max-h-24 object-contain" />
-                  <button 
-                    className="no-print absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
-                  >
-                    ×
-                  </button>
+                <div className="relative group logo-wrapper">
+                  <img src={logo} alt="Logo" className="invoice-custom-logo" />
+                  <div className="logo-actions no-print">
+                    <label className="logo-action-btn edit">
+                      Change
+                      <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                    </label>
+                    <button 
+                      className="logo-action-btn delete"
+                      onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <input 
-                  className="editable-input text-5xl font-medium tracking-tight" 
-                  value="Invoice Fly." 
-                  readOnly 
-                  style={{ padding: 0, background: 'none' }}
-                />
+                <div className="group relative">
+                  <input 
+                    className="editable-input text-5xl font-medium tracking-tight" 
+                    value="Invoice Fly." 
+                    readOnly 
+                    style={{ padding: 0, background: 'none' }}
+                  />
+                  <label className="no-print absolute -bottom-6 left-0 text-xs text-blue-600 cursor-pointer hover:underline">
+                    Upload Logo
+                    <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                  </label>
+                </div>
               )}
-              <label className="no-print block mt-2 text-xs text-blue-600 cursor-pointer hover:underline">
-                Upload Logo
-                <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
-              </label>
             </div>
 
             <div className="invoice-fly-company-info">
@@ -253,9 +259,8 @@ const Templates = () => {
               <input className="editable-input" value={d.from.email} onChange={e => updateNestedField('invoice', 'from', 'email', e.target.value)} />
               <input className="editable-input" value={d.from.phone} onChange={e => updateNestedField('invoice', 'from', 'phone', e.target.value)} />
             </div>
-          </div>
-          <div className="invoice-fly-right">
-            <div className="invoice-fly-number-box">
+            <div className="invoice-fly-right">
+              <div className="invoice-fly-number-box">
               <div className="flex justify-between items-center px-3 py-1 bg-[#7a9ca5] text-white font-bold">
                 <span>NO.</span>
                 <input className="editable-input w-20 text-right bg-transparent text-white border-none p-0" value={d.no} onChange={e => updateField('invoice', 'no', e.target.value)} />
