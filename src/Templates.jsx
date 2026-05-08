@@ -87,27 +87,27 @@ const Templates = () => {
       insuranceValue: 10.00
     },
     packing: {
-      companyName: 'Tenneco Logistics',
-      companySlogan: 'Moving the world forward',
-      date: 'September 1, 2026',
-      customerId: 'ABC12345',
-      shipTo: '[Name]\n[Company Name]\n[Street Address]\n[City, ST ZIP Code]\n[Phone]',
-      shippingAddress: '[Name]\n[Company Name]\n[Street Address]\n[City, ST ZIP Code]\n[Phone]',
-      orderDate: '2026-04-20',
-      poNumber: '100001',
-      salesperson: 'John Doe',
-      packingDate: '2026-04-25',
+      date: '10-04-2026',
+      recipient: 'TransEuro Wholesale LTD\nAtt. Casper Richardson\n126 East Ferry Road\nE149FP LONDON\nUnited Kingdom',
+      shipToCfr: 'Ex Work Moerdijk NL',
+      reference: 'n.a.',
+      orderNumber: '20265006',
+      blNumber: '',
       items: [
-        { id: '1', desc: 'Item Description', qty: 5 },
-        { id: '2', desc: 'Another Item', qty: 10 },
+        { desc: 'PDV Table Salt + 25kg PE Bags + Pallets', pallets: 5, bags: 245, totalNw: '6.125,00 kg', totalGw: '6.275,00 kg' }
       ],
-      specialNotes: 'Handle with care. Fragile items included.',
-      packedBy: 'Michael Smith',
-      checkedBy: 'Sarah Johnson',
-      contactPerson: 'John Doe',
-      contactPhone: '0-000-000-0000',
-      addressLine1: '111 Street, Town/City, County, ST, 00000',
-      contactFull: 'Tel: 0-000-000-0000 Fax: 0-000-000-0000 E-mail: info@tenneco.com Web: www.tenneco.com'
+      hsCode: '25010091',
+      summaryBags: '245',
+      summaryBagsLabel: '25 KG BAGS:',
+      summaryPallets: '5',
+      summaryPalletsLabel: 'PALLETS:',
+      summaryNetWeight: '6.125,00 kg',
+      summaryNetWeightLabel: 'NET WEIGHT:',
+      summaryGrossWeight: '6.275,00 kg',
+      summaryGrossWeightLabel: 'GROSS WEIGHT:',
+      footerInfo1: 'Eurosalt Handelsmaatschappij B.V. Plaza 6, 4782SK Moerdijk NL. T. +31 (0) 168 393200',
+      footerInfo2: 'Rabobank 1214.76.928 – IBAN: NL 76 RABO 0121 4769 28 – BIC: RABONL2U',
+      footerInfo3: 'Chamber of Commerce: Breda NL, 24179430 – EORI: NL 0085.36.910 B01'
     }
   });
 
@@ -198,9 +198,14 @@ const Templates = () => {
       ? { desc: '', qty: 1, price: 0 }
       : template === 'customs'
       ? { desc: '', qty: 1, tariff: '', country: '', weight: 0, value: 0 }
-      : { id: '', desc: '', qty: 1 };
+      : { desc: '', pallets: 0, bags: 0, totalNw: '', totalGw: '' };
     
     updateField(template, 'items', [...data[template].items, newItem]);
+  };
+
+  const removeItem = (template, index) => {
+    const newItems = data[template].items.filter((_, i) => i !== index);
+    updateField(template, 'items', newItems);
   };
 
   const calculateSubtotal = () => {
@@ -561,12 +566,13 @@ const Templates = () => {
 
   const renderPackingSlip = () => {
     const d = data.packing;
-    const totalQty = d.items.reduce((acc, item) => acc + Number(item.qty), 0);
+    const totalPallets = d.items.reduce((acc, item) => acc + Number(item.pallets || 0), 0);
+    const totalBags = d.items.reduce((acc, item) => acc + Number(item.bags || 0), 0);
 
     return (
-      <div className="template-paper">
-        <div className="packing-header">
-          <div className="flex flex-col gap-4">
+      <div className="template-paper packing-slip-new">
+        <div className="packing-new-header">
+          <div className="packing-new-logo-section">
             <div className="invoice-fly-logo-container no-print-padding">
               <div className="relative group logo-wrapper">
                 {logo ? (
@@ -593,110 +599,150 @@ const Templates = () => {
                 )}
               </div>
             </div>
-            <div>
-              <input className="editable-input font-bold text-2xl" value={d.companyName} onChange={e => updateField('packing', 'companyName', e.target.value)} />
-              <input className="editable-input italic text-gray-500" value={d.companySlogan} onChange={e => updateField('packing', 'companySlogan', e.target.value)} />
+            
+            <div className="packing-new-recipient">
+              <textarea 
+                className="editable-input font-bold" 
+                rows="5" 
+                value={d.recipient} 
+                onChange={e => updateField('packing', 'recipient', e.target.value)} 
+              />
             </div>
           </div>
-          <div className="text-right">
-            <h1 className="packing-title">Packing Slip</h1>
-            <div className="text-sm mt-4">
-              <div className="flex justify-end gap-4"><span>Date:</span> <input className="editable-input w-32 border-b" value={d.date} onChange={e => updateField('packing', 'date', e.target.value)} /></div>
-              <div className="flex justify-end gap-4 mt-1"><span className="whitespace-nowrap">Customer ID:</span> <input className="editable-input w-32 border-b" value={d.customerId} onChange={e => updateField('packing', 'customerId', e.target.value)} /></div>
+
+          <div className="packing-new-title-section text-right">
+            <h1 className="packing-new-title">PACKING LIST</h1>
+            <div className="packing-new-date-box mt-10">
+              <div className="text-gray-400 font-bold text-sm">DATE</div>
+              <input 
+                className="editable-input text-right text-gray-500 font-bold border-none bg-transparent p-0" 
+                value={d.date} 
+                onChange={e => updateField('packing', 'date', e.target.value)} 
+              />
             </div>
           </div>
         </div>
 
-        <div className="packing-grid">
-          <div>
-            <div className="packing-blue-bar">Ship To:</div>
-            <textarea className="editable-input" rows="5" value={d.shipTo} onChange={e => updateField('packing', 'shipTo', e.target.value)} />
-          </div>
-          <div>
-            <div className="packing-blue-bar">Shipping Address: (If Different)</div>
-            <textarea className="editable-input" rows="5" value={d.shippingAddress} onChange={e => updateField('packing', 'shippingAddress', e.target.value)} />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-4 border border-gray-300 mb-6">
-          <div className="border-r p-2">
-            <div className="text-[10px] font-bold text-blue-800">Order Date</div>
-            <input className="editable-input" value={d.orderDate} onChange={e => updateField('packing', 'orderDate', e.target.value)} />
-          </div>
-          <div className="border-r p-2">
-            <div className="text-[10px] font-bold text-blue-800">Purchase Order #</div>
-            <input className="editable-input" value={d.poNumber} onChange={e => updateField('packing', 'poNumber', e.target.value)} />
-          </div>
-          <div className="border-r p-2">
-            <div className="text-[10px] font-bold text-blue-800">Salesperson</div>
-            <input className="editable-input" value={d.salesperson} onChange={e => updateField('packing', 'salesperson', e.target.value)} />
-          </div>
-          <div className="p-2">
-            <div className="text-[10px] font-bold text-blue-800">Packing Date</div>
-            <input className="editable-input" value={d.packingDate} onChange={e => updateField('packing', 'packingDate', e.target.value)} />
-          </div>
-        </div>
-
-        <table className="packing-table">
-          <thead>
-            <tr>
-              <th width="15%">Item #</th>
-              <th width="70%">Description</th>
-              <th width="15%">Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            {d.items.map((item, i) => (
-              <tr key={i}>
-                <td><input className="editable-input" value={item.id} onChange={e => updateItem('packing', i, 'id', e.target.value)} /></td>
-                <td><input className="editable-input" value={item.desc} onChange={e => updateItem('packing', i, 'desc', e.target.value)} /></td>
-                <td><input className="editable-input" type="number" value={item.qty} onChange={e => updateItem('packing', i, 'qty', e.target.value)} /></td>
+        <div className="packing-new-meta-table mt-12">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-1/4">SHIP-TO (CFR)</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-1/4">REFERENCE</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-1/4">ORDER NUMBER</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-1/4">B/L NUMBER</th>
               </tr>
-            ))}
-             <tr className="no-print">
-              <td colSpan="3"><button onClick={() => addItem('packing')} className="text-blue-600 text-sm font-bold">+ Add Item</button></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div className="flex justify-between items-center p-4 font-bold border-b border-gray-300">
-          <span>Total Quantity of Goods/Boxes</span>
-          <span>-</span>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border border-gray-300 p-2"><input className="editable-input text-[11px] text-center" value={d.shipToCfr} onChange={e => updateField('packing', 'shipToCfr', e.target.value)} /></td>
+                <td className="border border-gray-300 p-2"><input className="editable-input text-[11px] text-center" value={d.reference} onChange={e => updateField('packing', 'reference', e.target.value)} /></td>
+                <td className="border border-gray-300 p-2"><input className="editable-input text-[11px] text-center" value={d.orderNumber} onChange={e => updateField('packing', 'orderNumber', e.target.value)} /></td>
+                <td className="border border-gray-300 p-2"><input className="editable-input text-[11px] text-center" value={d.blNumber} onChange={e => updateField('packing', 'blNumber', e.target.value)} /></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div className="mt-6">
-          <div className="packing-blue-bar">Special Notes</div>
-          <textarea className="editable-input border p-2" rows="4" value={d.specialNotes} onChange={e => updateField('packing', 'specialNotes', e.target.value)} />
+        <hr className="my-12 border-gray-300 no-print-margin" />
+
+        <div className="packing-new-items-table">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase text-center">DESCRIPTION</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-20">PALLETS</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-20">BAGS</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-32">TOTAL NW</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-32">TOTAL GW</th>
+              </tr>
+            </thead>
+            <tbody>
+              {d.items.map((item, i) => (
+                <tr key={i} className="group">
+                  <td className="border border-gray-300 p-2 relative">
+                    <textarea 
+                      className="editable-input text-[11px] resize-none overflow-hidden min-h-[40px] w-full block" 
+                      rows="1" 
+                      value={item.desc} 
+                      onChange={e => {
+                        updateItem('packing', i, 'desc', e.target.value);
+                        e.target.style.height = 'auto';
+                        e.target.style.height = e.target.scrollHeight + 'px';
+                      }}
+                      onFocus={e => {
+                        e.target.style.height = 'auto';
+                        e.target.style.height = e.target.scrollHeight + 'px';
+                      }}
+                    />
+                    <button 
+                      onClick={() => removeItem('packing', i)}
+                      className="absolute -left-8 top-1/2 -translate-y-1/2 text-red-500 opacity-0 group-hover:opacity-100 no-print p-2 font-bold text-lg"
+                      title="Remove Item"
+                    >
+                      ×
+                    </button>
+                  </td>
+                  <td className="border border-gray-300 p-2"><input className="editable-input text-[11px] text-center" type="number" value={item.pallets} onChange={e => updateItem('packing', i, 'pallets', e.target.value)} /></td>
+                  <td className="border border-gray-300 p-2"><input className="editable-input text-[11px] text-center" type="number" value={item.bags} onChange={e => updateItem('packing', i, 'bags', e.target.value)} /></td>
+                  <td className="border border-gray-300 p-2"><input className="editable-input text-[11px] text-center font-bold" value={item.totalNw} onChange={e => updateItem('packing', i, 'totalNw', e.target.value)} /></td>
+                  <td className="border border-gray-300 p-2"><input className="editable-input text-[11px] text-center font-bold" value={item.totalGw} onChange={e => updateItem('packing', i, 'totalGw', e.target.value)} /></td>
+                </tr>
+              ))}
+              <tr className="bg-white">
+                <td className="border border-gray-300 p-2 font-bold text-[11px] uppercase">TOTAL</td>
+                <td className="border border-gray-300 p-2 text-center font-bold text-[11px]">{totalPallets}</td>
+                <td className="border border-gray-300 p-2 text-center font-bold text-[11px]"><span className="bg-yellow-300 px-2 py-1">{totalBags}</span></td>
+                <td className="border border-gray-300 p-2 text-center font-bold text-[11px]">{d.items.length === 1 ? d.items[0].totalNw : '-'}</td>
+                <td className="border border-gray-300 p-2 text-center font-bold text-[11px]">{d.items.length === 1 ? d.items[0].totalGw : '-'}</td>
+              </tr>
+              <tr className="no-print">
+                <td colSpan="5" className="p-2">
+                  <button onClick={() => addItem('packing')} className="text-blue-600 text-xs font-bold">+ Add Item</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div className="grid grid-cols-2 gap-10 mt-10">
-          <div className="flex items-end gap-2">
-            <span className="text-sm whitespace-nowrap">Packed By:</span>
-            <input className="editable-input border-b" value={d.packedBy} onChange={e => updateField('packing', 'packedBy', e.target.value)} />
+        <div className="packing-new-summary mt-12 flex justify-between items-start">
+          <div className="w-1/2 pl-12">
+            <div className="mb-4">
+              <span className="text-[14px] font-medium flex items-center gap-1">HS: <input className="editable-input w-32 border-none p-0 bg-transparent font-medium" value={d.hsCode} onChange={e => updateField('packing', 'hsCode', e.target.value)} /></span>
+            </div>
+            
+            <div className="space-y-1">
+              <div className="flex justify-between items-center w-80">
+                <input className="editable-input w-40 text-[14px] font-bold uppercase border-none p-0 bg-transparent" value={d.summaryBagsLabel} onChange={e => updateField('packing', 'summaryBagsLabel', e.target.value)} />
+                <input className="editable-input w-32 text-[14px] font-bold text-right border-none p-0 bg-transparent" value={d.summaryBags} onChange={e => updateField('packing', 'summaryBags', e.target.value)} />
+              </div>
+              <div className="flex justify-between items-center w-80">
+                <input className="editable-input w-40 text-[14px] font-bold uppercase border-none p-0 bg-transparent" value={d.summaryPalletsLabel} onChange={e => updateField('packing', 'summaryPalletsLabel', e.target.value)} />
+                <input className="editable-input w-32 text-[14px] font-bold text-right border-none p-0 bg-transparent" value={d.summaryPallets} onChange={e => updateField('packing', 'summaryPallets', e.target.value)} />
+              </div>
+              <div className="flex justify-between items-center w-80">
+                <input className="editable-input w-40 text-[14px] font-bold uppercase border-none p-0 bg-transparent" value={d.summaryNetWeightLabel} onChange={e => updateField('packing', 'summaryNetWeightLabel', e.target.value)} />
+                <input className="editable-input w-32 text-[14px] font-bold text-right border-none p-0 bg-transparent" value={d.summaryNetWeight} onChange={e => updateField('packing', 'summaryNetWeight', e.target.value)} />
+              </div>
+              <div className="flex justify-between items-center w-80">
+                <input className="editable-input w-40 text-[14px] font-bold uppercase border-none p-0 bg-transparent" value={d.summaryGrossWeightLabel} onChange={e => updateField('packing', 'summaryGrossWeightLabel', e.target.value)} />
+                <input className="editable-input w-32 text-[14px] font-bold text-right border-none p-0 bg-transparent" value={d.summaryGrossWeight} onChange={e => updateField('packing', 'summaryGrossWeight', e.target.value)} />
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex items-end gap-2">
-              <span className="text-sm whitespace-nowrap">Checked By:</span>
-              <input className="editable-input border-b" value={d.checkedBy} onChange={e => updateField('packing', 'checkedBy', e.target.value)} />
-            </div>
-            <div className="flex items-end gap-2">
-              <span className="text-sm whitespace-nowrap">Signature:</span>
-              <div className="border-b w-full h-8"></div>
-            </div>
+          
+          <div className="border border-gray-300 w-[380px] h-60 mr-4">
+            {/* Right side empty box as in image */}
           </div>
         </div>
 
-        <div className="text-center mt-12 text-[11px]">
-          <h2 className="text-xl font-bold mb-4">Thank you for your business!</h2>
-          <div className="flex flex-col gap-1 items-center">
-            <div className="flex items-center gap-2">
-              <span>Should you have any enquiries concerning this packing slip or your goods, please contact</span>
-              <input className="editable-input w-32 border-none p-0 text-center" value={d.contactPerson} onChange={e => updateField('packing', 'contactPerson', e.target.value)} />
-              <span>on</span>
-              <input className="editable-input w-32 border-none p-0 text-center" value={d.contactPhone} onChange={e => updateField('packing', 'contactPhone', e.target.value)} />
+        <div className="packing-new-footer">
+          <div className="text-[13px] text-gray-700 leading-relaxed text-center w-full">
+            <input className="editable-input text-center w-full p-0 border-none bg-transparent" value={d.footerInfo1} onChange={e => updateField('packing', 'footerInfo1', e.target.value)} />
+            <input className="editable-input text-center w-full p-0 border-none bg-transparent mt-2" value={d.footerInfo2} onChange={e => updateField('packing', 'footerInfo2', e.target.value)} />
+            <div className="mt-3 bg-gray-100 px-8 py-1.5 rounded-full inline-block mx-auto min-w-[650px]">
+              <input className="editable-input text-center w-full p-0 border-none bg-transparent font-medium" value={d.footerInfo3} onChange={e => updateField('packing', 'footerInfo3', e.target.value)} />
             </div>
-            <input className="editable-input w-full border-none p-0 text-center" value={d.addressLine1} onChange={e => updateField('packing', 'addressLine1', e.target.value)} />
-            <input className="editable-input w-full border-none p-0 text-center" value={d.contactFull} onChange={e => updateField('packing', 'contactFull', e.target.value)} />
           </div>
         </div>
       </div>
