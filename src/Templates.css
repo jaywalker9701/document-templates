@@ -528,6 +528,49 @@
   padding: 2px 4px;
 }
 
+.commercial-invoice-new .commercial-new-header {
+  height: 180px;
+}
+
+.commercial-invoice-new .commercial-new-logo-section {
+  /* Layout now handled by Tailwind Grid */
+}
+
+.commercial-invoice-new .commercial-new-recipient {
+  width: 100%;
+}
+
+.commercial-invoice-new .commercial-new-title-section {
+  /* Layout now handled by Tailwind Grid */
+}
+
+.commercial-invoice-new .commercial-new-title {
+  letter-spacing: 1px;
+}
+
+.commercial-invoice-new .commercial-new-meta-box {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 4px;
+}
+
+.commercial-invoice-new .commercial-new-meta-table th {
+  background-color: #f1f5f9 !important;
+  color: #64748b;
+  font-size: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.commercial-invoice-new .commercial-new-items-table th {
+  background-color: #f1f5f9 !important;
+  color: #64748b;
+  font-size: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.commercial-new-bottom {
+  border: 1px solid #e2e8f0;
+}
+
 .packing-new-footer {
   position: absolute;
   bottom: 15mm;
@@ -538,6 +581,7 @@
   align-items: center;
   padding: 0 20mm;
 }
+
 
 .packing-new-footer .editable-input {
   font-size: 13px;

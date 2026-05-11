@@ -48,43 +48,30 @@ const Templates = () => {
       paymentInfo: 'Invoice Fly\nBillionaire Bank of America\nAccount No.: 5677-4332-2271-3215'
     },
     customs: {
-      date: '2026-04-29',
-      invoiceNo: 'CI-1002',
-      waybillNo: 'WB-7721',
-      exporter: {
-        type: 'Business',
-        name: 'John Doe',
-        company: 'Tenneco Inc.',
-        address: '123 Industrial Way, London, UK'
-      },
-      importer: {
-        type: 'Individual',
-        name: 'Jane Smith',
-        company: 'Global Parts Ltd.',
-        address: '456 Delivery St, Berlin, Germany'
-      },
-      exporterDetails: {
-        phone: '+44 20 1234 5678',
-        email: 'export@tenneco.com',
-        vat: 'GB123456789',
-        eori: 'GB123456789000'
-      },
-      importerDetails: {
-        phone: '+49 30 9876 5432',
-        email: 'import@globalparts.de',
-        vat: 'DE987654321',
-        eori: 'DE987654321000'
-      },
+      invoiceNumber: '26705103',
+      date: '02-04-2026',
+      recipient: 'TransEuro Wholesale LTD\nAtt. Casper Richardson\n126 East Ferry Road\nE149FP LONDON\nUnited Kingdom',
+      billTo: 'TransEuro Wholesale LTD\n126 East Ferry Road\nE 149FP LONDON\nUnited Kingdom\n\nEORI: GB511730431000',
+      shipTo: '',
+      incoTerm: 'Ex Work',
+      customerRef: 'n.a.',
+      orderNumber: '20265006',
+      blNo: 'n.a.',
+      currency: 'Euro',
+      payment: 'Prepaid',
       items: [
-        { desc: 'Piston Ring', qty: 100, tariff: '8409.91', country: 'UK', weight: 0.5, value: 5.00 },
-        { desc: 'Gasket Set', qty: 50, tariff: '8484.10', country: 'UK', weight: 0.2, value: 12.00 },
+        { qty: '6,125', unit: 'MT (1.000 KG)', desc: 'PDV Table Salt + 25kg PE Bags + Pallets', unitPrice: '€ 189,00', total: '€ 1.157,63' }
       ],
-      exportReason: 'Sale',
-      detailedReason: 'Automotive Spare Parts for Resale',
-      deliveryTerms: 'DAP - Delivered At Place',
-      ioss: 'IM1234567890',
-      shippingValue: 45.00,
-      insuranceValue: 10.00
+      palletsCount: '5 pallets',
+      hsCode: '25010091',
+      taxText: 'TAX: As the delivery is abroad, the shipment is not subject to VAT',
+      taxValue: '€ 0,--',
+      documentsValue: '€ 50,00',
+      totalValue: '€ 1.207,63',
+      declaration: 'The exporter of the products covered by this document declares that, except where otherwise clearly indicated, these products are of UK origin. Resale forbidden to EU-sanctioned countries, entities, organizations and/or persons',
+      footerInfo1: 'Eurosalt Handelsmaatschappij B.V. Plaza 6, 4782SK Moerdijk NL. T. +31 (0) 168 393200',
+      footerInfo2: 'Rabobank 1214.76.928 – IBAN: NL 76 RABO 0121 4769 28 – BIC: RABONL2U',
+      footerInfo3: 'Chamber of Commerce: Breda NL, 24179430 – EORI: NL 0085.36.910 B01'
     },
     packing: {
       date: '10-04-2026',
@@ -194,12 +181,12 @@ const Templates = () => {
   };
 
   const addItem = (template) => {
-    const newItem = template === 'invoice' 
+    const newItem = template === 'invoice'
       ? { desc: '', qty: 1, price: 0 }
       : template === 'customs'
-      ? { desc: '', qty: 1, tariff: '', country: '', weight: 0, value: 0 }
-      : { desc: '', pallets: 0, bags: 0, totalNw: '', totalGw: '' };
-    
+      ? { qty: '', unit: '', desc: '', unitPrice: '', total: '' }
+        : { desc: '', pallets: 0, bags: 0, totalNw: '', totalGw: '' };
+
     updateField(template, 'items', [...data[template].items, newItem]);
   };
 
@@ -225,50 +212,50 @@ const Templates = () => {
     return (
       <div className="template-paper">
         <div className="invoice-fly-header">
-            <div className="invoice-fly-logo-container no-print-padding flex flex-col gap-4">
-              <div className="relative group logo-wrapper">
-                {logo ? (
-                  <>
-                    <img src={logo} alt="Logo" className="invoice-custom-logo" />
-                    <div className="logo-actions no-print">
-                      <label className="logo-action-btn edit">
-                        Change
-                        <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
-                      </label>
-                      <button 
-                        className="logo-action-btn delete"
-                        onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <label className="no-print block text-xs text-blue-600 cursor-pointer hover:underline mb-2">
-                    + Upload Logo
-                    <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
-                  </label>
-                )}
-              </div>
-              
-              <div className="group relative">
-                <input 
-                  className="editable-input text-5xl font-medium tracking-tight" 
-                  value="Invoice Fly." 
-                  readOnly 
-                  style={{ padding: 0, background: 'none' }}
-                />
-              </div>
+          <div className="invoice-fly-logo-container no-print-padding flex flex-col gap-4">
+            <div className="relative group logo-wrapper">
+              {logo ? (
+                <>
+                  <img src={logo} alt="Logo" className="invoice-custom-logo" />
+                  <div className="logo-actions no-print">
+                    <label className="logo-action-btn edit">
+                      Change
+                      <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                    </label>
+                    <button
+                      className="logo-action-btn delete"
+                      onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <label className="no-print block text-xs text-blue-600 cursor-pointer hover:underline mb-2">
+                  + Upload Logo
+                  <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                </label>
+              )}
             </div>
 
-            <div className="invoice-fly-company-info">
-              <input className="editable-input font-bold" value={d.from.name} onChange={e => updateNestedField('invoice', 'from', 'name', e.target.value)} />
-              <textarea className="editable-input" rows="2" value={d.from.address} onChange={e => updateNestedField('invoice', 'from', 'address', e.target.value)} />
-              <input className="editable-input" value={d.from.email} onChange={e => updateNestedField('invoice', 'from', 'email', e.target.value)} />
-              <input className="editable-input" value={d.from.phone} onChange={e => updateNestedField('invoice', 'from', 'phone', e.target.value)} />
+            <div className="group relative">
+              <input
+                className="editable-input text-5xl font-medium tracking-tight"
+                value="Invoice Fly."
+                readOnly
+                style={{ padding: 0, background: 'none' }}
+              />
             </div>
-            <div className="invoice-fly-right">
-              <div className="invoice-fly-number-box">
+          </div>
+
+          <div className="invoice-fly-company-info">
+            <input className="editable-input font-bold" value={d.from.name} onChange={e => updateNestedField('invoice', 'from', 'name', e.target.value)} />
+            <textarea className="editable-input" rows="2" value={d.from.address} onChange={e => updateNestedField('invoice', 'from', 'address', e.target.value)} />
+            <input className="editable-input" value={d.from.email} onChange={e => updateNestedField('invoice', 'from', 'email', e.target.value)} />
+            <input className="editable-input" value={d.from.phone} onChange={e => updateNestedField('invoice', 'from', 'phone', e.target.value)} />
+          </div>
+          <div className="invoice-fly-right">
+            <div className="invoice-fly-number-box">
               <div className="flex justify-between items-center px-3 py-1 bg-[#7a9ca5] text-white font-bold">
                 <span>NO.</span>
                 <input className="editable-input w-20 text-right bg-transparent text-white border-none p-0" value={d.no} onChange={e => updateField('invoice', 'no', e.target.value)} />
@@ -340,16 +327,16 @@ const Templates = () => {
             <div className="flex justify-between text-sm text-gray-500 uppercase"><span>Sub Total</span> <span>${calculateSubtotal().toFixed(0)}</span></div>
             <div className="flex justify-between text-sm text-gray-500 uppercase"><span>Tax ({d.tax}%)</span> <span>${calculateTax().toFixed(0)}</span></div>
             <div className="flex justify-between text-sm text-gray-500 uppercase items-center">
-              <span>Discount</span> 
+              <span>Discount</span>
               <input className="editable-input w-16 text-right p-0" type="number" value={d.discount} onChange={e => updateField('invoice', 'discount', e.target.value)} />
             </div>
             <div className="flex justify-between text-sm text-gray-500 uppercase items-center">
-              <span>Shipping</span> 
+              <span>Shipping</span>
               <input className="editable-input w-16 text-right p-0" type="number" value={d.shipping} onChange={e => updateField('invoice', 'shipping', e.target.value)} />
             </div>
             <div className="flex justify-between font-bold pt-2 border-t border-gray-300"><span>TOTAL AMOUNT</span> <span>${calculateTotal().toFixed(0)}</span></div>
             <div className="flex justify-between text-sm text-gray-500 uppercase items-center">
-              <span>Amount Paid</span> 
+              <span>Amount Paid</span>
               <input className="editable-input w-16 text-right p-0" type="number" value={d.amountPaid} onChange={e => updateField('invoice', 'amountPaid', e.target.value)} />
             </div>
             <div className="flex justify-between font-bold pt-4 border-t-2 border-black text-lg"><span>BALANCE DUE</span> <span>${(calculateTotal() - d.amountPaid).toFixed(0)}</span></div>
@@ -372,191 +359,266 @@ const Templates = () => {
 
   const renderCustomsInvoice = () => {
     const d = data.customs;
-    const totalItemsValue = d.items.reduce((acc, item) => acc + (item.qty * item.value), 0);
-    const totalWeight = d.items.reduce((acc, item) => acc + (item.qty * item.weight), 0);
-    const totalQuantity = d.items.reduce((acc, item) => acc + Number(item.qty), 0);
 
     return (
-      <div className="template-paper">
-        <div className="flex justify-between items-start mb-6">
-          <div className="flex flex-col gap-2">
-            <div className="invoice-fly-logo-container no-print-padding">
-              <div className="relative group logo-wrapper">
-                {logo ? (
-                  <>
-                    <img src={logo} alt="Logo" className="invoice-custom-logo" />
-                    <div className="logo-actions no-print">
-                      <label className="logo-action-btn edit">
-                        Change
-                        <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
-                      </label>
-                      <button 
-                        className="logo-action-btn delete"
-                        onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <label className="no-print block text-xs text-blue-600 cursor-pointer hover:underline">
-                    + Upload Logo
+      <div className="template-paper commercial-invoice-new">
+        <div className="invoice-fly-logo-container no-print-padding mb-6 ml-4">
+          <div className="relative group logo-wrapper">
+            {logo ? (
+              <>
+                <img src={logo} alt="Logo" className="invoice-custom-logo max-h-24" />
+                <div className="logo-actions no-print">
+                  <label className="logo-action-btn edit">
+                    Change
                     <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
                   </label>
-                )}
+                  <button 
+                    className="logo-action-btn delete"
+                    onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </>
+            ) : (
+              <label className="no-print block text-xs text-blue-600 cursor-pointer hover:underline">
+                + Upload Logo
+                <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+              </label>
+            )}
+          </div>
+        </div>
+
+        <div className="commercial-new-header border border-gray-300 grid grid-cols-12">
+          <div className="commercial-new-logo-section border-r border-gray-300 p-4 col-span-6 h-full flex items-center">
+            <div className="commercial-new-recipient w-full">
+              <textarea 
+                className="editable-input font-bold text-[13px] leading-snug w-full bg-transparent" 
+                rows="5" 
+                value={d.recipient} 
+                onChange={e => updateField('customs', 'recipient', e.target.value)} 
+              />
+            </div>
+          </div>
+
+          <div className="commercial-new-title-section text-right py-4 pl-4 pr-8 box-border col-span-6 flex flex-col justify-between overflow-hidden">
+            <h1 className="commercial-new-title text-[20px] font-medium text-gray-400 m-0 truncate w-full pr-4">COMMERCIAL INVOICE</h1>
+            <div className="space-y-4 w-full">
+              <div className="commercial-new-meta-box pr-4">
+                <div className="text-gray-400 font-bold text-[9px] uppercase">INVOICE NUMBER</div>
+                <input 
+                  className="editable-input text-right text-gray-500 font-bold border-none bg-transparent p-0 text-[13px] w-full" 
+                  value={d.invoiceNumber} 
+                  onChange={e => updateField('customs', 'invoiceNumber', e.target.value)} 
+                />
+              </div>
+              <div className="commercial-new-meta-box pr-4">
+                <div className="text-gray-400 font-bold text-[9px] uppercase">DATE</div>
+                <input 
+                  className="editable-input text-right text-gray-500 font-bold border-none bg-transparent p-0 text-[13px] w-full" 
+                  value={d.date} 
+                  onChange={e => updateField('customs', 'date', e.target.value)} 
+                />
               </div>
             </div>
           </div>
-          <h1 className="customs-invoice-title text-right m-0">INVOICE FOR CUSTOMS VALUE ONLY</h1>
-        </div>
-        
-        <div className="customs-meta-grid">
-          <div className="customs-meta-item">
-            <span className="customs-meta-label">(1) Invoice Date:</span>
-            <input className="editable-input" value={d.date} onChange={e => updateField('customs', 'date', e.target.value)} />
-          </div>
-          <div className="customs-meta-item">
-            <span className="customs-meta-label">(2) Invoice No:</span>
-            <input className="editable-input" value={d.invoiceNo} onChange={e => updateField('customs', 'invoiceNo', e.target.value)} />
-          </div>
-          <div className="customs-meta-item">
-            <span className="customs-meta-label">(3) Waybill No:</span>
-            <input className="editable-input" value={d.waybillNo} onChange={e => updateField('customs', 'waybillNo', e.target.value)} />
-          </div>
         </div>
 
-        <div className="customs-main-grid">
-          <div className="customs-box">
-            <div className="customs-box-title">EXPORTER OF RECORD:</div>
-            <div className="customs-box-content">
-              <div className="customs-row"><div className="customs-label-cell">(4) Exporter Type:</div><div className="customs-value-cell"><input className="editable-input" value={d.exporter.type} onChange={e => updateNestedField('customs', 'exporter', 'type', e.target.value)} /></div></div>
-              <div className="customs-row"><div className="customs-label-cell">(5) Contact Name:</div><div className="customs-value-cell"><input className="editable-input" value={d.exporter.name} onChange={e => updateNestedField('customs', 'exporter', 'name', e.target.value)} /></div></div>
-              <div className="customs-row"><div className="customs-label-cell">(6) Company Name:</div><div className="customs-value-cell"><input className="editable-input" value={d.exporter.company} onChange={e => updateNestedField('customs', 'exporter', 'company', e.target.value)} /></div></div>
-              <div className="customs-row" style={{ height: '100px' }}><div className="customs-label-cell">(7) Address:</div><div className="customs-value-cell"><textarea className="editable-input h-full" rows="4" value={d.exporter.address} onChange={e => updateNestedField('customs', 'exporter', 'address', e.target.value)} /></div></div>
-              
-              <div className="customs-row"><div className="customs-label-cell">(12) Contact Number:</div><div className="customs-value-cell"><input className="editable-input" value={d.exporterDetails.phone} onChange={e => updateNestedField('customs', 'exporterDetails', 'phone', e.target.value)} /></div></div>
-              <div className="customs-row"><div className="customs-label-cell">(13) Contact Email:</div><div className="customs-value-cell"><input className="editable-input" value={d.exporterDetails.email} onChange={e => updateNestedField('customs', 'exporterDetails', 'email', e.target.value)} /></div></div>
-              <div className="customs-row"><div className="customs-label-cell">(14) VAT Number:</div><div className="customs-value-cell"><input className="editable-input" value={d.exporterDetails.vat} onChange={e => updateNestedField('customs', 'exporterDetails', 'vat', e.target.value)} /></div></div>
-              <div className="customs-row"><div className="customs-label-cell">(15) EORI Number:</div><div className="customs-value-cell"><input className="editable-input" value={d.exporterDetails.eori} onChange={e => updateNestedField('customs', 'exporterDetails', 'eori', e.target.value)} /></div></div>
-            </div>
-          </div>
-
-          <div className="customs-box">
-            <div className="customs-box-title">IMPORTER OF RECORD:</div>
-            <div className="customs-box-content">
-              <div className="customs-row"><div className="customs-label-cell">(8) Importer Type:</div><div className="customs-value-cell"><input className="editable-input" value={d.importer.type} onChange={e => updateNestedField('customs', 'importer', 'type', e.target.value)} /></div></div>
-              <div className="customs-row"><div className="customs-label-cell">(9) Contact Name:</div><div className="customs-value-cell"><input className="editable-input" value={d.importer.name} onChange={e => updateNestedField('customs', 'importer', 'name', e.target.value)} /></div></div>
-              <div className="customs-row"><div className="customs-label-cell">(10) Company Name:</div><div className="customs-value-cell"><input className="editable-input" value={d.importer.company} onChange={e => updateNestedField('customs', 'importer', 'company', e.target.value)} /></div></div>
-              <div className="customs-row" style={{ height: '100px' }}><div className="customs-label-cell">(11) Address:</div><div className="customs-value-cell"><textarea className="editable-input h-full" rows="4" value={d.importer.address} onChange={e => updateNestedField('customs', 'importer', 'address', e.target.value)} /></div></div>
-
-              <div className="customs-row"><div className="customs-label-cell">(16) Contact Number:</div><div className="customs-value-cell"><input className="editable-input" value={d.importerDetails.phone} onChange={e => updateNestedField('customs', 'importerDetails', 'phone', e.target.value)} /></div></div>
-              <div className="customs-row"><div className="customs-label-cell">(17) Contact Email:</div><div className="customs-value-cell"><input className="editable-input" value={d.importerDetails.email} onChange={e => updateNestedField('customs', 'importerDetails', 'email', e.target.value)} /></div></div>
-              <div className="customs-row"><div className="customs-label-cell">(18) VAT Number:</div><div className="customs-value-cell"><input className="editable-input" value={d.importerDetails.vat} onChange={e => updateNestedField('customs', 'importerDetails', 'vat', e.target.value)} /></div></div>
-              <div className="customs-row"><div className="customs-label-cell">(19) EORI Number:</div><div className="customs-value-cell"><input className="editable-input" value={d.importerDetails.eori} onChange={e => updateNestedField('customs', 'importerDetails', 'eori', e.target.value)} /></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-2 font-bold text-sm">CONSIGNMENT CONTENTS:</div>
-        <div className="grid grid-cols-3 border border-black mb-1">
-          <div className="border-r border-black p-1 text-[10px] font-bold flex flex-col">
-            <span>(20) Number of Parcels:</span>
-            <input className="editable-input" value="1" />
-          </div>
-          <div className="border-r border-black p-1 text-[10px] font-bold flex flex-col">
-            <span>(21) Total Net Weight:</span>
-            <span className="text-sm">{totalWeight.toFixed(2)} KG</span>
-          </div>
-          <div className="p-1 text-[10px] font-bold flex flex-col">
-            <span>(22) Total Gross Weight:</span>
-            <input className="editable-input" value={(totalWeight + 0.5).toFixed(2)} />
-          </div>
-        </div>
-
-        <table className="customs-table">
-          <thead>
-            <tr>
-              <th width="30%">(23) Full Description</th>
-              <th width="10%">(24) No. Items</th>
-              <th width="15%">(25) Tariff Code</th>
-              <th width="10%">(26) Man. Country</th>
-              <th width="10%">(27) Net Weight</th>
-              <th width="10%">(28) Item Value</th>
-              <th width="15%">(29) Total Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {d.items.map((item, i) => (
-              <tr key={i}>
-                <td><input className="editable-input" value={item.desc} onChange={e => updateItem('customs', i, 'desc', e.target.value)} /></td>
-                <td><input className="editable-input" type="number" value={item.qty} onChange={e => updateItem('customs', i, 'qty', e.target.value)} /></td>
-                <td><input className="editable-input" value={item.tariff} onChange={e => updateItem('customs', i, 'tariff', e.target.value)} /></td>
-                <td><input className="editable-input" value={item.country} onChange={e => updateItem('customs', i, 'country', e.target.value)} /></td>
-                <td><input className="editable-input" type="number" value={item.weight} onChange={e => updateItem('customs', i, 'weight', e.target.value)} /></td>
-                <td><input className="editable-input" type="number" value={item.value} onChange={e => updateItem('customs', i, 'value', e.target.value)} /></td>
-                <td className="text-right">${(item.qty * item.value).toFixed(2)}</td>
+        <div className="commercial-new-meta-table mt-8">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase">BILL-TO</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase">SHIP-TO</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase">INCO-term</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase">Customer REF</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase">ORDER No.</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase">B/L No</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase">CURRENCY</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase">PAYMENT</th>
               </tr>
-            ))}
-             <tr className="no-print">
-              <td colSpan="7"><button onClick={() => addItem('customs')} className="text-blue-600 text-[10px] font-bold">+ Add Item</button></td>
-            </tr>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border border-gray-300 p-1 w-[30%] align-top">
+                  <textarea 
+                    className="editable-input text-[10px] font-bold p-2 overflow-hidden" 
+                    style={{ resize: 'horizontal' }} 
+                    rows="5" 
+                    value={d.billTo} 
+                    onChange={e => updateField('customs', 'billTo', e.target.value)} 
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = (e.target.scrollHeight) + 'px'; }}
+                  />
+                </td>
+                <td className="border border-gray-300 p-1 w-[15%] align-top">
+                  <textarea 
+                    className="editable-input text-[10px] font-bold p-2 overflow-hidden" 
+                    style={{ resize: 'horizontal' }} 
+                    rows="5" 
+                    value={d.shipTo} 
+                    onChange={e => updateField('customs', 'shipTo', e.target.value)} 
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = (e.target.scrollHeight) + 'px'; }}
+                  />
+                </td>
+                <td className="border border-gray-300 p-1 text-center align-top">
+                  <textarea 
+                    className="editable-input text-[10px] font-bold text-center overflow-hidden resize-none w-full break-words" 
+                    rows="1" 
+                    value={d.incoTerm} 
+                    onChange={e => updateField('customs', 'incoTerm', e.target.value)} 
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = (e.target.scrollHeight) + 'px'; }}
+                  />
+                </td>
+                <td className="border border-gray-300 p-1 text-center align-top">
+                  <textarea 
+                    className="editable-input text-[10px] font-bold text-center overflow-hidden resize-none w-full break-words" 
+                    rows="1" 
+                    value={d.customerRef} 
+                    onChange={e => updateField('customs', 'customerRef', e.target.value)} 
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = (e.target.scrollHeight) + 'px'; }}
+                  />
+                </td>
+                <td className="border border-gray-300 p-1 text-center align-top">
+                  <textarea 
+                    className="editable-input text-[10px] font-bold text-center overflow-hidden resize-none w-full break-words" 
+                    rows="1" 
+                    value={d.orderNumber} 
+                    onChange={e => updateField('customs', 'orderNumber', e.target.value)} 
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = (e.target.scrollHeight) + 'px'; }}
+                  />
+                </td>
+                <td className="border border-gray-300 p-1 text-center align-top">
+                  <textarea 
+                    className="editable-input text-[10px] font-bold text-center overflow-hidden resize-none w-full break-words" 
+                    rows="1" 
+                    value={d.blNo} 
+                    onChange={e => updateField('customs', 'blNo', e.target.value)} 
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = (e.target.scrollHeight) + 'px'; }}
+                  />
+                </td>
+                <td className="border border-gray-300 p-1 text-center align-top">
+                  <textarea 
+                    className="editable-input text-[10px] font-bold text-center overflow-hidden resize-none w-full break-words" 
+                    rows="1" 
+                    value={d.currency} 
+                    onChange={e => updateField('customs', 'currency', e.target.value)} 
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = (e.target.scrollHeight) + 'px'; }}
+                  />
+                </td>
+                <td className="border border-gray-300 p-1 text-center align-top">
+                  <textarea 
+                    className="editable-input text-[10px] font-bold text-center overflow-hidden resize-none w-full break-words" 
+                    rows="1" 
+                    value={d.payment} 
+                    onChange={e => updateField('customs', 'payment', e.target.value)} 
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = (e.target.scrollHeight) + 'px'; }}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <div className="grid grid-cols-2 gap-10">
-          <div>
-            <div className="grid grid-cols-2 border border-black mb-1">
-              <span className="p-1 text-[10px] font-bold border-r border-black">(30) Export Reason:</span>
-              <input className="editable-input" value={d.exportReason} onChange={e => updateField('customs', 'exportReason', e.target.value)} />
-            </div>
-            <div className="grid grid-cols-2 border border-black mb-1">
-              <span className="p-1 text-[10px] font-bold border-r border-black">(31) Detailed Reason:</span>
-              <input className="editable-input" value={d.detailedReason} onChange={e => updateField('customs', 'detailedReason', e.target.value)} />
-            </div>
-            <div className="grid grid-cols-2 border border-black mb-1">
-              <span className="p-1 text-[10px] font-bold border-r border-black">(32) Delivery Terms:</span>
-              <input className="editable-input" value={d.deliveryTerms} onChange={e => updateField('customs', 'deliveryTerms', e.target.value)} />
-            </div>
-            <div className="grid grid-cols-2 border border-black">
-              <span className="p-1 text-[10px] font-bold border-r border-black">(33) IOSS:</span>
-              <input className="editable-input" value={d.ioss} onChange={e => updateField('customs', 'ioss', e.target.value)} />
-            </div>
+        <div className="commercial-new-items-table mt-8">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-[10%]">QTY</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-[20%]">UNIT</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-[40%] text-left">DESCRIPTION</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-[15%]">UNIT PRICE</th>
+                <th className="border border-gray-300 p-2 text-[10px] font-bold text-gray-500 uppercase w-[15%]">TOTAL</th>
+              </tr>
+            </thead>
+            <tbody>
+              {d.items.map((item, i) => (
+                <tr key={i} className="group">
+                  <td className="border border-gray-300 p-2 relative">
+                    <input className="editable-input text-[11px] text-center" value={item.qty} onChange={e => updateItem('customs', i, 'qty', e.target.value)} />
+                    <button 
+                      onClick={() => removeItem('customs', i)}
+                      className="absolute -left-8 top-1/2 -translate-y-1/2 text-red-500 opacity-0 group-hover:opacity-100 no-print p-2 font-bold text-lg"
+                      title="Remove Item"
+                    >
+                      ×
+                    </button>
+                  </td>
+                  <td className="border border-gray-300 p-2"><input className="editable-input text-[11px] text-center" value={item.unit} onChange={e => updateItem('customs', i, 'unit', e.target.value)} /></td>
+                  <td className="border border-gray-300 p-2">
+                    <textarea 
+                      className="editable-input text-[11px] resize-none overflow-hidden min-h-[40px] w-full block" 
+                      rows="1" 
+                      value={item.desc} 
+                      onChange={e => {
+                        updateItem('customs', i, 'desc', e.target.value);
+                        e.target.style.height = 'auto';
+                        e.target.style.height = e.target.scrollHeight + 'px';
+                      }}
+                      onFocus={e => {
+                        e.target.style.height = 'auto';
+                        e.target.style.height = e.target.scrollHeight + 'px';
+                      }}
+                    />
+                  </td>
+                  <td className="border border-gray-300 p-2"><input className="editable-input w-full text-[11px] text-center font-bold" value={item.unitPrice} onChange={e => updateItem('customs', i, 'unitPrice', e.target.value)} /></td>
+                  <td className="border border-gray-300 p-2"><input className="editable-input w-full text-[11px] text-center font-bold" value={item.total} onChange={e => updateItem('customs', i, 'total', e.target.value)} /></td>
+                </tr>
+              ))}
+              <tr className="no-print">
+                <td colSpan="5" className="p-2">
+                  <button onClick={() => addItem('customs')} className="text-blue-600 text-xs font-bold">+ Add Item</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="commercial-new-bottom mt-1 flex border-x border-b border-gray-300">
+          <div className="w-3/5 border-r border-gray-300 p-4 relative flex flex-col justify-between h-[300px]">
+             <div className="flex flex-col items-center justify-center flex-grow space-y-4">
+                <input className="editable-input text-center text-[18px] font-bold border-none bg-transparent w-full" value={d.palletsCount} onChange={e => updateField('customs', 'palletsCount', e.target.value)} />
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-[16px] font-medium whitespace-nowrap flex-shrink-0">HS-code:</span>
+                  <input 
+                    className="editable-input border-none p-0 bg-transparent font-medium text-[16px] text-left" 
+                    style={{ width: `${Math.max((d.hsCode || '').length + 1, 4)}ch` }}
+                    value={d.hsCode} 
+                    onChange={e => updateField('customs', 'hsCode', e.target.value)} 
+                  />
+                </div>
+             </div>
+             <div className="mt-4">
+                <textarea className="editable-input text-[11px] leading-tight" rows="4" value={d.declaration} onChange={e => updateField('customs', 'declaration', e.target.value)} />
+             </div>
           </div>
-          <div>
-            <div className="grid grid-cols-2 border border-black mb-1">
-              <span className="p-1 text-[10px] font-bold border-r border-black">(34) Shipping Value:</span>
-              <input className="editable-input text-right" type="number" value={d.shippingValue} onChange={e => updateField('customs', 'shippingValue', e.target.value)} />
+          
+          <div className="w-2/5 flex flex-col">
+            <div className="border-b border-gray-300 p-2 flex justify-between items-start min-h-[60px]">
+              <div className="text-[11px] font-bold w-3/4 leading-tight pr-2">
+                TAX: As the delivery is abroad, the shipment is not subject to VAT
+              </div>
+              <input className="editable-input w-24 text-[11px] font-bold text-right border-none p-0 bg-transparent" value={d.taxValue} onChange={e => updateField('customs', 'taxValue', e.target.value)} />
             </div>
-            <div className="grid grid-cols-2 border border-black mb-1">
-              <span className="p-1 text-[10px] font-bold border-r border-black">(35) Insurance Value:</span>
-              <input className="editable-input text-right" type="number" value={d.insuranceValue} onChange={e => updateField('customs', 'insuranceValue', e.target.value)} />
+            <div className="border-b border-gray-300 p-2 flex justify-between items-center min-h-[40px]">
+              <span className="text-[11px] font-bold uppercase">DOCUMENTS</span>
+              <input className="editable-input w-24 text-[11px] font-bold text-right border-none p-0 bg-transparent" value={d.documentsValue} onChange={e => updateField('customs', 'documentsValue', e.target.value)} />
             </div>
-            <div className="grid grid-cols-2 border-2 border-black bg-gray-100">
-              <span className="p-1 text-[10px] font-bold border-r border-black">(36) Total Value:</span>
-              <span className="p-1 text-right font-bold">${(totalItemsValue + Number(d.shippingValue) + Number(d.insuranceValue)).toFixed(2)}</span>
+            <div className="p-2 border-b border-gray-300 flex justify-between items-center min-h-[40px]">
+              <span className="text-[11px] font-bold uppercase">TOTAL</span>
+              <input className="editable-input w-24 text-[11px] font-bold text-right border-none p-0 bg-transparent" value={d.totalValue} onChange={e => updateField('customs', 'totalValue', e.target.value)} />
+            </div>
+            <div className="flex-grow">
+              {/* Empty signature space as in image */}
             </div>
           </div>
         </div>
 
-        <div className="mt-10 border border-black p-4 text-[11px]">
-          <p className="mb-2">I declare that the above information is true and correct to the best of my knowledge.</p>
-          <p className="mb-2">I declare as the exporter, that the products within this shipment are not subject to any export or import prohibitions & restrictions.</p>
-          <p className="mb-6">The undersigned exporter declares that, except where otherwise clearly indicated, these products are of United Kingdom preferential origin.</p>
-          
-          <div className="grid grid-cols-2 gap-10 mt-10">
-            <div>
-              <div className="border-b border-black mb-1"></div>
-              <span className="text-[10px]">Signature:</span>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <div className="border-b border-black mb-1 h-6"></div>
-                <span className="text-[10px]">Date:</span>
-              </div>
-              <div>
-                <div className="border-b border-black mb-1 h-6"></div>
-                <span className="text-[10px]">Print Name:</span>
-              </div>
+        <div className="packing-new-footer absolute bottom-6 left-0 right-0 flex flex-col items-center px-10">
+          <div className="text-[13px] text-gray-700 leading-relaxed text-center w-full">
+            <input className="editable-input text-center w-full p-0 border-none bg-transparent" value={d.footerInfo1} onChange={e => updateField('customs', 'footerInfo1', e.target.value)} />
+            <input className="editable-input text-center w-full p-0 border-none bg-transparent mt-2" value={d.footerInfo2} onChange={e => updateField('customs', 'footerInfo2', e.target.value)} />
+            <div className="mt-3 bg-gray-100 px-8 py-1.5 rounded-full inline-block mx-auto min-w-[650px]">
+              <input className="editable-input text-center w-full p-0 border-none bg-transparent font-medium" value={d.footerInfo3} onChange={e => updateField('customs', 'footerInfo3', e.target.value)} />
             </div>
           </div>
         </div>
@@ -583,7 +645,7 @@ const Templates = () => {
                         Change
                         <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
                       </label>
-                      <button 
+                      <button
                         className="logo-action-btn delete"
                         onClick={() => { setLogo(null); localStorage.removeItem('tenneco_custom_logo'); }}
                       >
@@ -599,13 +661,13 @@ const Templates = () => {
                 )}
               </div>
             </div>
-            
+
             <div className="packing-new-recipient">
-              <textarea 
-                className="editable-input font-bold" 
-                rows="5" 
-                value={d.recipient} 
-                onChange={e => updateField('packing', 'recipient', e.target.value)} 
+              <textarea
+                className="editable-input font-bold"
+                rows="5"
+                value={d.recipient}
+                onChange={e => updateField('packing', 'recipient', e.target.value)}
               />
             </div>
           </div>
@@ -614,10 +676,10 @@ const Templates = () => {
             <h1 className="packing-new-title">PACKING LIST</h1>
             <div className="packing-new-date-box mt-10">
               <div className="text-gray-400 font-bold text-sm">DATE</div>
-              <input 
-                className="editable-input text-right text-gray-500 font-bold border-none bg-transparent p-0" 
-                value={d.date} 
-                onChange={e => updateField('packing', 'date', e.target.value)} 
+              <input
+                className="editable-input text-right text-gray-500 font-bold border-none bg-transparent p-0"
+                value={d.date}
+                onChange={e => updateField('packing', 'date', e.target.value)}
               />
             </div>
           </div>
@@ -661,10 +723,10 @@ const Templates = () => {
               {d.items.map((item, i) => (
                 <tr key={i} className="group">
                   <td className="border border-gray-300 p-2 relative">
-                    <textarea 
-                      className="editable-input text-[11px] resize-none overflow-hidden min-h-[40px] w-full block" 
-                      rows="1" 
-                      value={item.desc} 
+                    <textarea
+                      className="editable-input text-[11px] resize-none overflow-hidden min-h-[40px] w-full block"
+                      rows="1"
+                      value={item.desc}
                       onChange={e => {
                         updateItem('packing', i, 'desc', e.target.value);
                         e.target.style.height = 'auto';
@@ -675,7 +737,7 @@ const Templates = () => {
                         e.target.style.height = e.target.scrollHeight + 'px';
                       }}
                     />
-                    <button 
+                    <button
                       onClick={() => removeItem('packing', i)}
                       className="absolute -left-8 top-1/2 -translate-y-1/2 text-red-500 opacity-0 group-hover:opacity-100 no-print p-2 font-bold text-lg"
                       title="Remove Item"
@@ -710,7 +772,7 @@ const Templates = () => {
             <div className="mb-4">
               <span className="text-[14px] font-medium flex items-center gap-1">HS: <input className="editable-input w-32 border-none p-0 bg-transparent font-medium" value={d.hsCode} onChange={e => updateField('packing', 'hsCode', e.target.value)} /></span>
             </div>
-            
+
             <div className="space-y-1">
               <div className="flex justify-between items-center w-80">
                 <input className="editable-input w-40 text-[14px] font-bold uppercase border-none p-0 bg-transparent" value={d.summaryBagsLabel} onChange={e => updateField('packing', 'summaryBagsLabel', e.target.value)} />
@@ -730,7 +792,7 @@ const Templates = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="border border-gray-300 w-[380px] h-60 mr-4">
             {/* Right side empty box as in image */}
           </div>
@@ -761,21 +823,21 @@ const Templates = () => {
           <form onSubmit={handleLogin}>
             <div className="form-group">
               <label>Email</label>
-              <input 
-                type="email" 
-                required 
-                value={loginForm.email} 
-                onChange={e => setLoginForm({...loginForm, email: e.target.value})}
+              <input
+                type="email"
+                required
+                value={loginForm.email}
+                onChange={e => setLoginForm({ ...loginForm, email: e.target.value })}
                 placeholder="admin@templates.com"
               />
             </div>
             <div className="form-group">
               <label>Password</label>
-              <input 
-                type="password" 
-                required 
-                value={loginForm.password} 
-                onChange={e => setLoginForm({...loginForm, password: e.target.value})}
+              <input
+                type="password"
+                required
+                value={loginForm.password}
+                onChange={e => setLoginForm({ ...loginForm, password: e.target.value })}
                 placeholder="••••••••"
               />
             </div>
@@ -795,19 +857,19 @@ const Templates = () => {
 
       <div className="templates-header">
         <div className="template-selector">
-          <button 
+          <button
             className={`template-btn ${activeTemplate === 'invoice' ? 'active' : ''}`}
             onClick={() => setActiveTemplate('invoice')}
           >
             Invoice
           </button>
-          <button 
+          <button
             className={`template-btn ${activeTemplate === 'packing' ? 'active' : ''}`}
             onClick={() => setActiveTemplate('packing')}
           >
             Packing Slip
           </button>
-          <button 
+          <button
             className={`template-btn ${activeTemplate === 'customs' ? 'active' : ''}`}
             onClick={() => setActiveTemplate('customs')}
           >
